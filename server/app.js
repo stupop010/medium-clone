@@ -54,10 +54,8 @@ if (!isProduction) {
     res.status(err.status || 500);
 
     res.json({
-      errors: {
-        message: err.message,
-        error: err,
-      },
+      message: err.message,
+      error: err,
     });
   });
 }

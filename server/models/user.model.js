@@ -1,6 +1,5 @@
-const { DataTypes } = require("sequelize");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const db = require("./index");
 
 const user = (sequelize, DataTypes) => {
   const User = sequelize.define("user", {
@@ -29,6 +28,17 @@ const user = (sequelize, DataTypes) => {
 
   User.prototype.comparePassword = function (password) {
     return bcrypt.compareSync(password, this.password);
+  };
+
+  User.prototype.createJWTToken = function () {
+    return jwt.sign(
+      {
+        id: this.id,
+        name: this.name,
+        exp: Math.floor(Date.now() / 1000) + 60 * 60,
+      },
+      process.env.SECRET
+    );
   };
 
   User.prototype.toAuthJson = function () {

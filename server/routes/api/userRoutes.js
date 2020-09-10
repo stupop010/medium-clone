@@ -1,8 +1,8 @@
 const router = require("express").Router();
-const generateToken = require("../../config/jwt");
+
 const passport = require("passport");
 
-router.post("/", async (req, res, next) => {
+router.post("/register", async (req, res, next) => {
   const { name, email, password } = req.body;
   const { models } = req;
 
@@ -14,9 +14,8 @@ router.post("/", async (req, res, next) => {
     });
 
     res.json({
-      name: user.name,
-      email: user.email,
-      token: generateToken(user.id, user.name),
+      ...user.toAuthJson(),
+      token: user.createJWTToken(),
     });
   } catch (err) {
     next(err);
@@ -34,7 +33,10 @@ router.post("/login", async (req, res, next) => {
     if (err) return next(err);
 
     if (user) {
-      res.json(user.toAuthJson());
+      res.json({
+        ...user.toAuthJson(),
+        token: user.createJWTToken(),
+      });
     } else {
       res.status(422).json({ error: info.message });
     }
