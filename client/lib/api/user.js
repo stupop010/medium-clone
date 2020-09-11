@@ -20,7 +20,7 @@ const userAPI = {
         ...values,
       });
 
-      console.log(response);
+      return response;
     } catch (err) {
       return err.response;
     }

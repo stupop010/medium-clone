@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { mutate } from "swr";
 
 import ErrorMessage from "../common/Error";
 import userAPI from "../../lib/api/user";
@@ -14,6 +15,7 @@ const RegisterForm = () => {
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,10 +24,24 @@ const RegisterForm = () => {
       setIsLoading(true);
       const { data, status } = await userAPI.register(values);
 
+      setErrors("");
       console.log(data, status);
+
+      if (status !== 200) {
+        setErrors(data.message);
+      }
+
+      if (data.email) {
+        setValues(initialState);
+        const user = { ...data };
+        window.localStorage.setItem("user", JSON.stringify(user));
+        mutate("user", user);
+        router.push("/");
+      }
     } catch (err) {
       setErrors(err.message);
     } finally {
+      setErrors("");
       setIsLoading(false);
     }
   };

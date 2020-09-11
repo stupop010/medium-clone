@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { mutate } from "swr";
 
 import ErrorMessage from "../common/Error";
 import userAPI from "../../lib/api/user";
@@ -21,13 +22,16 @@ const LoginForm = () => {
       setIsLoading(true);
       const { data, status } = await userAPI.login(values);
 
+      setErrors("");
       if (status !== 200) {
         setErrors(data.error);
       }
 
-      if (data.name) {
+      if (data.email) {
         setValues(initialState);
-        window.localStorage.setItem("token", data.token);
+        const user = { ...data };
+        window.localStorage.setItem("user", JSON.stringify(user));
+        mutate("user", user);
         router.push("/");
       }
     } catch (err) {

@@ -31,6 +31,7 @@ input:focus {
 ul {
   margin: 0;
   padding: 0;
+  list-style: none;
 }
 
 .auth-form {
@@ -58,4 +59,8 @@ ul {
 
 .auth-btn:hover {
   opacity: 1;
+}
+
+.article-textarea {
+  height: 220px;
 }

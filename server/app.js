@@ -48,8 +48,9 @@ app.use(function (req, res, next) {
 
 if (!isProduction) {
   app.use((err, req, res, next) => {
-    console.log(err.stack);
-    console.log(err);
+    console.log("-----------");
+    console.log(err.message);
+    console.log("-----------");
 
     res.status(err.status || 500);
 
