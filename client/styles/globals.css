@@ -64,3 +64,8 @@ ul {
 .article-textarea {
   height: 220px;
 }
+
+.tag-cross {
+  margin-right: 5px;
+  cursor: pointer;
+}

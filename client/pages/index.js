@@ -6,6 +6,7 @@ import Banner from "../components/home/Banner";
 import TagList from "../components/home/TagList";
 import Layout from "../components/common/Layout";
 import Container from "../components/common/Container";
+import ArticleList from "../components/article/articleList";
 
 import getStorage from "../lib/utils/getStorage";
 
@@ -40,7 +41,7 @@ export default function Home() {
           <HomeLayout>
             <ContentContainer>
               <TagList />
-              {/* <AritiesList /> */}
+              <ArticleList />
             </ContentContainer>
             <AsideContainer>
               {/* <PopularTags /> */}

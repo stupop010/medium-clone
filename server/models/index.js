@@ -6,7 +6,15 @@ const sequelize = new Sequelize(
 
 const models = {
   User: require("./user.model")(sequelize, Sequelize.DataTypes),
+  Article: require("./article.model")(sequelize, Sequelize.DataTypes),
+  Tag: require("./tag.model")(sequelize, Sequelize.DataTypes),
 };
+
+Object.keys(models).forEach((model) => {
+  if ("associate" in models[model]) {
+    models[model].associate(models);
+  }
+});
 
 models.Sequelize = Sequelize;
 models.sequelize = sequelize;

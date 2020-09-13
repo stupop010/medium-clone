@@ -19,13 +19,6 @@ const InputTag = ({ handleAddTag }) => {
 
   const handleChange = (e) => setValue(e.target.value);
 
-  //   const handleAddTag = () => {
-  //     console.log("hello");
-  //     console.log(value);
-
-  //     setValue("");
-  //   };
-
   return (
     <input
       name="title"

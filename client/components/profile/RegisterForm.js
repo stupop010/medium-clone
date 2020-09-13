@@ -25,7 +25,6 @@ const RegisterForm = () => {
       const { data, status } = await userAPI.register(values);
 
       setErrors("");
-      console.log(data, status);
 
       if (status !== 200) {
         setErrors(data.message);
@@ -41,7 +40,6 @@ const RegisterForm = () => {
     } catch (err) {
       setErrors(err.message);
     } finally {
-      setErrors("");
       setIsLoading(false);
     }
   };

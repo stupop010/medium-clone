@@ -1,11 +1,5 @@
 const router = require("express").Router();
-const { required } = require("./auth");
-router.use("/api", require("./api"));
 
-router.get("/api/g", required, (req, res) => {
-  res.json({
-    hello: "hello",
-  });
-});
+router.use("/api", require("./api"));
 
 module.exports = router;
