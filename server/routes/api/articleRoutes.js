@@ -5,14 +5,20 @@ router.get("/", optional, async (req, res, next) => {
   const { models } = req;
   try {
     const response = await models.Article.findAll({
+      include: [
+        models.Tag,
+        {
+          model: models.User,
+          attributes: ["name"],
+        },
+      ],
       order: [["createdAt", "DESC"]],
       limit: 25,
-      include: models.Tag,
     });
 
-    console.log(response);
+    res.json(response);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 });
 

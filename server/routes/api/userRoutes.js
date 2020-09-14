@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const passport = require("passport");
+const { required } = require("../auth");
 
 router.post("/register", async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -15,7 +16,8 @@ router.post("/register", async (req, res, next) => {
 
     res.json({
       ...user.toAuthJson(),
-      token: user.createJWTToken(),
+      accessToken: user.createAccessToken(),
+      refreshToken: user.createRefreshToken(),
     });
   } catch (err) {
     next(err);

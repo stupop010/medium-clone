@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -11,6 +11,7 @@ import Error from "../../components/common/Error";
 
 import articleAPI from "../../lib/api/article";
 import getStorage from "../../lib/utils/getStorage";
+import checkAuth from "../../lib/utils/checkAuth";
 
 const ArticleContainer = styled.section`
   width: 670px;
@@ -30,6 +31,13 @@ const New = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { data: currentUser } = useSWR("user", getStorage);
+
+  const isLogin = checkAuth(currentUser);
+  console.log(isLogin);
+  // useEffect(() => {
+  //   console.log(isLogin);
+  //   if (!isLogin) router.push("/user/login");
+  // }, [isLogin]);
 
   const handleChange = (e) =>
     setValues({ ...values, [e.target.name]: e.target.value });

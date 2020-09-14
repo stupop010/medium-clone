@@ -31,6 +31,7 @@ const RegisterForm = () => {
       }
 
       if (data.email) {
+        console.log(data)
         setValues(initialState);
         const user = { ...data };
         window.localStorage.setItem("user", JSON.stringify(user));

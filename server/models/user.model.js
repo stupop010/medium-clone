@@ -30,14 +30,19 @@ const user = (sequelize, DataTypes) => {
     return bcrypt.compareSync(password, this.password);
   };
 
-  User.prototype.createJWTToken = function () {
+  User.prototype.createAccessToken = function () {
     return jwt.sign(
-      {
-        id: this.id,
-        name: this.name,
-        exp: Math.floor(Date.now() / 1000) + 60 * 60,
-      },
-      process.env.SECRET
+      { user: { _id: this.id, name: this.name } },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "15m" }
+    );
+  };
+
+  User.prototype.createRefreshToken = function () {
+    return jwt.sign(
+      { user: { _id: this.id, name: this.name } },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "7d" }
     );
   };
 

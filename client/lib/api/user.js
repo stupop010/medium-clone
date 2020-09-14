@@ -25,6 +25,13 @@ const userAPI = {
       return err.response;
     }
   },
+  // checkUser: async () => {
+  //   try {
+  //     const respinse = await axios.get(`${SERVER_BASE_URL}/user/check-auth`)
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // },
 };
 
 export default userAPI;

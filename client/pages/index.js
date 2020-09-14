@@ -9,6 +9,7 @@ import Container from "../components/common/Container";
 import ArticleList from "../components/article/articleList";
 
 import getStorage from "../lib/utils/getStorage";
+import checkAuth from "../lib/utils/checkAuth";
 
 const HomeLayout = styled.div`
   display: flex;
@@ -18,16 +19,19 @@ const HomeLayout = styled.div`
 const ContentContainer = styled.div`
   flex: 0 0 75%;
   max-width: 75%;
+  padding: 0 15px;
 `;
 
 const AsideContainer = styled.div`
   flex: 0 0 25%;
   max-width: 75%;
   background-color: red;
+  padding: 0 15px;
 `;
 
 export default function Home() {
   const { data } = useSWR("user", getStorage);
+  // checkAuth();
 
   return (
     <>

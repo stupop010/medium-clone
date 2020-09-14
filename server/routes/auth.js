@@ -15,13 +15,13 @@ function getTokenFromHeader(req) {
 
 module.exports = {
   required: jwt({
-    secret: process.env.SECRET,
+    secret: process.env.ACCESS_TOKEN_SECRET,
     userProperty: "user",
     getToken: getTokenFromHeader,
     algorithms: ["HS256"],
   }),
   optional: jwt({
-    secret: process.env.SECRET,
+    secret: process.env.ACCESS_TOKEN_SECRET,
     userProperty: "user",
     credentialsRequired: false,
     getToken: getTokenFromHeader,

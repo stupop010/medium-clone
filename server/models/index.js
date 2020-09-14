@@ -8,6 +8,7 @@ const models = {
   User: require("./user.model")(sequelize, Sequelize.DataTypes),
   Article: require("./article.model")(sequelize, Sequelize.DataTypes),
   Tag: require("./tag.model")(sequelize, Sequelize.DataTypes),
+  Token: require("./token.models")(sequelize, Sequelize.DataTypes),
 };
 
 Object.keys(models).forEach((model) => {

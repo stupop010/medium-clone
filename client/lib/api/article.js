@@ -19,7 +19,6 @@ const articleAPI = {
     } catch (err) {
       return err.response;
     }
-    // return data;
   },
 };
 
