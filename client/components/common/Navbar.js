@@ -49,6 +49,11 @@ const Navbar = () => {
               <a>sign up</a>
             </Link>
           </li>
+          <li>
+            <Link href="/editor/new">
+              <a>new</a>
+            </Link>
+          </li>
         </List>
       </Container>
     </nav>

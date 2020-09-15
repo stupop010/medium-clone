@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { mutate } from "swr";
 
 import ErrorMessage from "../common/Error";
 import userAPI from "../../lib/api/user";
+import localStorageService from "../../lib/utils/localStorageService";
 
 const initialState = {
   email: "",
   password: "",
 };
 
-const LoginForm = () => {
+const LoginForm = ({ updateUser }) => {
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +22,6 @@ const LoginForm = () => {
       setIsLoading(true);
       const { data, status } = await userAPI.login(values);
 
-      setErrors("");
       if (status !== 200) {
         setErrors(data.error);
       }
@@ -30,8 +29,11 @@ const LoginForm = () => {
       if (data.email) {
         setValues(initialState);
         const user = { ...data };
-        window.localStorage.setItem("user", JSON.stringify(user));
-        mutate("user", user);
+        updateUser(user);
+        localStorageService.setLocalStorageTokens(
+          user.accessToken,
+          user.refreshToken
+        );
         router.push("/");
       }
     } catch (err) {

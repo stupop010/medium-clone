@@ -1,6 +1,6 @@
 const token = (sequelize, DataTypes) => {
   const Token = sequelize.define("token", {
-    tag: {
+    token: {
       type: DataTypes.STRING,
     },
   });

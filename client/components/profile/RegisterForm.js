@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { mutate } from "swr";
 
 import ErrorMessage from "../common/Error";
 import userAPI from "../../lib/api/user";
+
+import localStorageService from "../../lib/utils/localStorageService";
 
 const initialState = {
   name: "",
@@ -11,7 +12,7 @@ const initialState = {
   password: "",
 };
 
-const RegisterForm = () => {
+const RegisterForm = ({ updateUser }) => {
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -24,18 +25,18 @@ const RegisterForm = () => {
       setIsLoading(true);
       const { data, status } = await userAPI.register(values);
 
-      setErrors("");
-
       if (status !== 200) {
         setErrors(data.message);
       }
 
       if (data.email) {
-        console.log(data)
         setValues(initialState);
         const user = { ...data };
-        window.localStorage.setItem("user", JSON.stringify(user));
-        mutate("user", user);
+        updateUser(user);
+        localStorageService.setLocalStorageTokens(
+          user.accessToken,
+          user.refreshToken
+        );
         router.push("/");
       }
     } catch (err) {

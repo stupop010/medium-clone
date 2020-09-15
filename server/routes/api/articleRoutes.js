@@ -53,10 +53,10 @@ router.post("/new", required, async (req, res, next) => {
       }
     });
 
-    res.json(article);
+    res.status(201).json(article);
   } catch (err) {
     console.log("-------------------");
-    console.log(err);
+    console.log(err, "article error");
     console.log("-------------------");
     next(err);
   }

@@ -49,7 +49,7 @@ app.use(function (req, res, next) {
 if (!isProduction) {
   app.use((err, req, res, next) => {
     console.log("-----------");
-    console.log(err.message);
+    console.log(err.message, "error");
     console.log("-----------");
 
     res.status(err.status || 500);

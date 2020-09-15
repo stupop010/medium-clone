@@ -34,7 +34,7 @@ const user = (sequelize, DataTypes) => {
     return jwt.sign(
       { user: { _id: this.id, name: this.name } },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "15m" }
+      { expiresIn: "2m" }
     );
   };
 

@@ -1,8 +1,10 @@
 import axios from "axios";
 
+import localStorageService from "../utils/localStorageService";
+
 import { SERVER_BASE_URL } from "../utils/constant";
 const articleAPI = {
-  create: async (article, tags, token) => {
+  create: async (article, tags) => {
     try {
       const response = await axios.post(
         `${SERVER_BASE_URL}/article/new`,
@@ -10,13 +12,14 @@ const articleAPI = {
         {
           headers: {
             "content-type": "application/json",
-            Authorization: `Token ${token}`,
+            Authorization: `Token ` + localStorageService.getAccessToken(),
           },
         }
       );
-
+      console.log(response);
       return response;
     } catch (err) {
+      console.log(err, "api");
       return err.response;
     }
   },

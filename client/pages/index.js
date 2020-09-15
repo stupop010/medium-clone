@@ -1,5 +1,4 @@
 import Head from "next/head";
-import useSWR from "swr";
 import styled from "@emotion/styled";
 
 import Banner from "../components/home/Banner";
@@ -7,9 +6,6 @@ import TagList from "../components/home/TagList";
 import Layout from "../components/common/Layout";
 import Container from "../components/common/Container";
 import ArticleList from "../components/article/articleList";
-
-import getStorage from "../lib/utils/getStorage";
-import checkAuth from "../lib/utils/checkAuth";
 
 const HomeLayout = styled.div`
   display: flex;
@@ -30,9 +26,6 @@ const AsideContainer = styled.div`
 `;
 
 export default function Home() {
-  const { data } = useSWR("user", getStorage);
-  // checkAuth();
-
   return (
     <>
       <Head>
@@ -57,3 +50,10 @@ export default function Home() {
     </>
   );
 }
+
+// export async function getStaticProps() {
+//   console.log(window);
+//   return {
+//     props: {},
+//   };
+// }

@@ -1,5 +1,8 @@
+import { useContext } from "react";
 import Link from "next/link";
 import styled from "@emotion/styled";
+
+import { UserContext } from "../../lib/context/user/userState";
 
 import Layout from "../../components/common/Layout";
 import UserFormsHeading from "../../components/common/UserFormsHeading";
@@ -11,6 +14,8 @@ const FormContainer = styled.div`
 `;
 
 const Register = () => {
+  const { updateUser } = useContext(UserContext);
+
   return (
     <Layout>
       <FormContainer>
@@ -22,7 +27,7 @@ const Register = () => {
           </Link>
         </UserFormsHeading>
 
-        <RegisterForm />
+        <RegisterForm updateUser={updateUser} />
       </FormContainer>
     </Layout>
   );

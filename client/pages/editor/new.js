@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -12,6 +12,7 @@ import Error from "../../components/common/Error";
 import articleAPI from "../../lib/api/article";
 import getStorage from "../../lib/utils/getStorage";
 import checkAuth from "../../lib/utils/checkAuth";
+import { UserContext } from "../../lib/context/user/userState";
 
 const ArticleContainer = styled.section`
   width: 670px;
@@ -30,14 +31,11 @@ const New = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { data: currentUser } = useSWR("user", getStorage);
+  const { isLoggedIn } = useContext(UserContext);
 
-  const isLogin = checkAuth(currentUser);
-  console.log(isLogin);
-  // useEffect(() => {
-  //   console.log(isLogin);
-  //   if (!isLogin) router.push("/user/login");
-  // }, [isLogin]);
+  useEffect(() => {
+    if (!isLoggedIn) router.push("/user/login");
+  }, [isLoggedIn]);
 
   const handleChange = (e) =>
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -53,16 +51,11 @@ const New = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
 
     try {
-      const { data, status } = await articleAPI.create(
-        values,
-        tags,
-        currentUser.token
-      );
+      const { data, status } = await articleAPI.create(values, tags);
 
-      if (status !== 200) return setError(data.error);
+      if (status !== 200 || status !== 201) return setError(data.error);
 
       router.push("/");
     } catch (err) {
