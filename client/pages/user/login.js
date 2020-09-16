@@ -1,8 +1,10 @@
 import { useContext } from "react";
 import Link from "next/link";
+import Router from "next/router";
 import styled from "@emotion/styled";
 
 import { UserContext } from "../../lib/context/user/userState";
+import useAuth from "../../customHook/useAuth";
 
 import Layout from "../../components/common/Layout";
 import LoginForm from "../../components/profile/LoginForm";
@@ -14,7 +16,12 @@ const FormContainer = styled.div`
 `;
 
 const Login = () => {
+  const { isLoggedIn } = useAuth();
   const { updateUser } = useContext(UserContext);
+
+  if (isLoggedIn) {
+    Router.push("/");
+  }
 
   return (
     <Layout>

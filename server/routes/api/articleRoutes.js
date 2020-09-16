@@ -16,7 +16,7 @@ router.get("/", optional, async (req, res, next) => {
       limit: 25,
     });
 
-    res.json(response);
+    return res.json(response);
   } catch (err) {
     next(err);
   }
@@ -25,6 +25,7 @@ router.get("/", optional, async (req, res, next) => {
 router.post("/new", required, async (req, res, next) => {
   const { title, about, body, tags } = req.body;
   const { models } = req;
+  const { user } = req.user;
 
   if (!title) return res.status(422).json({ error: "Title can not be blank" });
   if (!about)
@@ -39,7 +40,7 @@ router.post("/new", required, async (req, res, next) => {
       title,
       about,
       body,
-      userId: req.user.id,
+      userId: user._id,
     });
 
     tags.forEach(async (tag) => {
@@ -53,7 +54,7 @@ router.post("/new", required, async (req, res, next) => {
       }
     });
 
-    res.status(201).json(article);
+    return res.status(201).json(article);
   } catch (err) {
     console.log("-------------------");
     console.log(err, "article error");

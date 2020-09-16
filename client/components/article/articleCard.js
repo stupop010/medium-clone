@@ -57,7 +57,6 @@ const CardFooter = styled.div`
 `;
 
 const ArticleCard = ({ article }) => {
-  console.log(article);
   return (
     <CardContainer>
       <CardHeader>

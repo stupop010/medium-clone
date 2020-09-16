@@ -13,7 +13,6 @@ export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
   const updateUser = (user) => {
-    console.log("hello");
     dispatch({
       type: "UPDATE_USER",
       payload: user,

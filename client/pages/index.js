@@ -7,6 +7,8 @@ import Layout from "../components/common/Layout";
 import Container from "../components/common/Container";
 import ArticleList from "../components/article/articleList";
 
+import useAuth from "../customHook/useAuth";
+
 const HomeLayout = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -26,6 +28,8 @@ const AsideContainer = styled.div`
 `;
 
 export default function Home() {
+  const { loading, user, isLoggedIn } = useAuth();
+
   return (
     <>
       <Head>
