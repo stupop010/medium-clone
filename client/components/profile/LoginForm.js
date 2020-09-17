@@ -20,6 +20,7 @@ const LoginForm = ({ updateUser }) => {
     e.preventDefault();
     try {
       setIsLoading(true);
+
       const { data, status } = await userAPI.login(values);
 
       if (status !== 200) {
@@ -29,11 +30,11 @@ const LoginForm = ({ updateUser }) => {
       if (data.email) {
         setValues(initialState);
         const user = { ...data };
-        updateUser(user);
         localStorageService.setLocalStorageTokens(
           user.accessToken,
           user.refreshToken
         );
+        updateUser(user);
         router.push("/");
       }
     } catch (err) {

@@ -7,6 +7,7 @@ import localStorageService from "./localStorageService";
   axios.interceptors.request.use(
     (config) => {
       const accessToken = localStorageService.getAccessToken();
+
       if (accessToken) {
         config.headers["Authorization"] = "Token " + accessToken;
       }
@@ -44,6 +45,10 @@ import localStorageService from "./localStorageService";
                 "Token " + localStorageService.getAccessToken();
 
               return axios.request(originalRequest);
+            }
+
+            if (res.status === 403) {
+              return res;
             }
           })
           .catch((error) => {

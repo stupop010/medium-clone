@@ -34,7 +34,7 @@ const user = (sequelize, DataTypes) => {
     return jwt.sign(
       { user: { _id: this.id, name: this.name } },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "15m" }
+      { expiresIn: "10m" }
     );
   };
 
@@ -42,7 +42,7 @@ const user = (sequelize, DataTypes) => {
     return jwt.sign(
       { user: { _id: this.id, name: this.name } },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "15m" }
     );
   };
 
@@ -65,3 +65,5 @@ const user = (sequelize, DataTypes) => {
 };
 
 module.exports = user;
+
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6MTgsIm5hbWUiOiJTdHVhcnQgRG9uZXkifSwiaWF0IjoxNjAwMzQxMjUxLCJleHAiOjE2MDAzNDEzNzF9.tIN60EO8GY3HQie9oyaMmXz73p7gDj-p8HwuKELW4dk

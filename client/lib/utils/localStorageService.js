@@ -18,6 +18,11 @@ const localStorageService = {
   getAccessToken: function () {
     return window.localStorage.getItem(ACCESS);
   },
+
+  removeTokens: function () {
+    window.localStorage.removeItem(ACCESS);
+    window.localStorage.removeItem(REFRESH);
+  },
 };
 
 export default localStorageService;

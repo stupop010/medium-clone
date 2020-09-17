@@ -92,14 +92,28 @@ router.post("/refresh", async (req, res, next) => {
     if (!token) {
       return res.status(401).json({ error: "Token expired" });
     } else {
-      const payload = jwt.verify(token.token, process.env.REFRESH_TOKEN_SECRET);
-      const accessToken = jwt.sign(
-        { user: payload.user },
-        process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "15m" }
+      const payload = jwt.verify(
+        token.token,
+        process.env.REFRESH_TOKEN_SECRET,
+        (err, decode) => {
+          if (err) {
+            const error = new Error("Refresh expired");
+            error.status = 403;
+            next(error);
+          }
+          return decode;
+        }
       );
 
-      return res.status(201).json({ accessToken });
+      if (payload) {
+        const accessToken = jwt.sign(
+          { user: payload.user },
+          process.env.ACCESS_TOKEN_SECRET,
+          { expiresIn: "10m" }
+        );
+
+        return res.status(201).json({ accessToken });
+      }
     }
   } catch (err) {
     next(err);

@@ -1,4 +1,5 @@
 import Head from "next/head";
+
 import styled from "@emotion/styled";
 
 import Banner from "../components/home/Banner";
@@ -28,7 +29,7 @@ const AsideContainer = styled.div`
 `;
 
 export default function Home() {
-  const { loading, user, isLoggedIn } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   return (
     <>

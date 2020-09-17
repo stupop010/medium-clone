@@ -46,20 +46,19 @@ app.use(function (req, res, next) {
   next(err);
 });
 
-if (!isProduction) {
-  app.use((err, req, res, next) => {
-    console.log("-----------");
-    console.log(err.message, "error");
-    console.log("-----------");
+app.use((err, req, res, next) => {
+  console.log("-----------");
+  console.log(err.message, "error");
+  console.log("-----------");
 
-    res.status(err.status || 500);
+  console.log(err.status, "status");
+  res.status(err.status || 500);
 
-    res.json({
-      message: err.message,
-      error: err,
-    });
+  res.json({
+    message: err.message,
+    error: err,
   });
-}
+});
 
 (async () => {
   try {

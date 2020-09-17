@@ -2,7 +2,7 @@ import { useReducer, createContext } from "react";
 
 import UserReducer from "./userReducer";
 
-const initialState = {
+export const initialState = {
   user: {},
   isLoggedIn: false,
 };
@@ -19,12 +19,20 @@ export const UserProvider = ({ children }) => {
     });
   };
 
+  const logoutUser = () => {
+    console.log("logout");
+    dispatch({
+      type: "LOGOUT",
+    });
+  };
+
   return (
     <UserContext.Provider
       value={{
         user: state.user,
         isLoggedIn: state.isLoggedIn,
         updateUser,
+        logoutUser,
       }}
     >
       {children}
