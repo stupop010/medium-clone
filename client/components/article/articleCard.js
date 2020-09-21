@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import articleAPI from "../../lib/api/article";
+
 const CardContainer = styled.div`
   border-top: 1px solid #a5a5a5;
   padding: 20px 0;
@@ -57,6 +59,10 @@ const CardFooter = styled.div`
 `;
 
 const ArticleCard = ({ article }) => {
+  const handleFollow = async () => {
+    await articleAPI.addFollow(article.id);
+  };
+
   return (
     <CardContainer>
       <CardHeader>
@@ -73,9 +79,9 @@ const ArticleCard = ({ article }) => {
             </span>
           </div>
         </div>
-        <CardFollow>
+        <CardFollow onClick={handleFollow}>
           <FontAwesomeIcon icon={faHeart} />
-          <span>0</span>
+          <span>{article.follows.length}</span>
         </CardFollow>
       </CardHeader>
 

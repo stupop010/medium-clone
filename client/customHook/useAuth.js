@@ -12,17 +12,15 @@ const useAuth = () => {
 
   const loading = !data && !error;
 
-  console.log(data);
-
   useEffect(() => {
     if (!data) return;
-    console.log(data);
+
     if (data.status === 403) {
-      if (data.data.message.includes("Refresh expired")) {
+      if (
+        data.data.message.includes("Refresh expired") ||
+        data.data.message.includes("refresh missing")
+      ) {
         logoutUser();
-        // TODO:
-        // Remove tokens from local storage.
-        // localStorageService.removeTokens();
       }
     } else {
       updateUser(data);

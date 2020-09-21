@@ -25,13 +25,17 @@ const userAPI = {
       return err.response;
     }
   },
-  // checkUser: async () => {
-  //   try {
-  //     const respinse = await axios.get(`${SERVER_BASE_URL}/user/check-auth`)
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // },
+  update: async (values) => {
+    try {
+      const response = await axios.put(`${SERVER_BASE_URL}/user/update`, {
+        ...values,
+      });
+
+      return response;
+    } catch (err) {
+      return err.response;
+    }
+  },
 };
 
 export default userAPI;

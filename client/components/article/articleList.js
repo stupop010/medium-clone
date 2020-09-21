@@ -8,7 +8,7 @@ import { SERVER_BASE_URL } from "../../lib/utils/constant";
 
 const ArticleList = () => {
   const { data, error } = useSWR(`${SERVER_BASE_URL}/article`, fetcher);
-  console.log(data);
+
   if (!data) return null;
   if (error) return <ErrorMessage error="Can't load recent article" />;
   if (data.length === 0) return <ErrorMessage error="No articles yet..." />;

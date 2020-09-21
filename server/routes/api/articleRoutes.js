@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { required, optional } = require("../auth");
 
-router.get("/", optional, async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   const { models } = req;
   try {
     const response = await models.Article.findAll({
@@ -11,11 +11,16 @@ router.get("/", optional, async (req, res, next) => {
           model: models.User,
           attributes: ["name"],
         },
+        {
+          // TODO:
+          // Count follows on article
+          model: models.Follow,
+        },
       ],
       order: [["createdAt", "DESC"]],
       limit: 25,
     });
-
+    console.log(response);
     return res.json(response);
   } catch (err) {
     next(err);
@@ -56,9 +61,34 @@ router.post("/new", required, async (req, res, next) => {
 
     return res.status(201).json(article);
   } catch (err) {
-    console.log("-------------------");
-    console.log(err, "article error");
-    console.log("-------------------");
+    next(err);
+  }
+});
+
+router.post("/follow", required, async (req, res, next) => {
+  const { articleId } = req.body;
+  const { models } = req;
+  const { user } = req.user;
+
+  try {
+    const currentFollow = await models.Follow.findOne({
+      where: {
+        articleId,
+        userId: user._id,
+      },
+    });
+
+    if (currentFollow) {
+      return res.status(422).json({ error: "Already followed" });
+    }
+
+    await models.Follow.create({
+      articleId,
+      userId: user._id,
+    });
+
+    return res.status(201);
+  } catch (err) {
     next(err);
   }
 });

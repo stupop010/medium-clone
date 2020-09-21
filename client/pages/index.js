@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>Chimi</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
@@ -45,20 +45,10 @@ export default function Home() {
               <TagList />
               <ArticleList />
             </ContentContainer>
-            <AsideContainer>
-              {/* <PopularTags /> */}
-              <div>s</div>
-            </AsideContainer>
+            <AsideContainer>{/* <PopularTags /> */}</AsideContainer>
           </HomeLayout>
         </Container>
       </Layout>
     </>
   );
 }
-
-// export async function getStaticProps() {
-//   console.log(window);
-//   return {
-//     props: {},
-//   };
-// }

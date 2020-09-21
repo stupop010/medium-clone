@@ -50,6 +50,7 @@ router.post("/register", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
   const { models } = req;
+  console.log("called");
 
   if (!email) return res.status(422).json({ error: "Can't be blank" });
 
@@ -79,7 +80,7 @@ router.post("/refresh", async (req, res, next) => {
   const { models } = req;
 
   if (!refreshToken) {
-    return res.status(403).json({ error: "Token missing" });
+    return res.status(403).json({ message: "refresh missing" });
   }
 
   try {
@@ -90,7 +91,7 @@ router.post("/refresh", async (req, res, next) => {
     });
 
     if (!token) {
-      return res.status(401).json({ error: "Token expired" });
+      return res.status(401).json({ message: "Token expired" });
     } else {
       const payload = jwt.verify(
         token.token,
@@ -115,6 +116,30 @@ router.post("/refresh", async (req, res, next) => {
         return res.status(201).json({ accessToken });
       }
     }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.put("/update", required, async (req, res, next) => {
+  const { username, bio, email, password } = req.body;
+  const { models } = req;
+  const userId = req.user.user._id;
+
+  const updateData = {};
+  if (!username) updateData.name = username;
+  if (!bio) updateData.bio = bio;
+  if (!email) updateData.email = email;
+  if (!password) updateData.password = password;
+
+  try {
+    await models.User.update({ updateData }, { where: { id: userId } });
+
+    const response = await models.User.findOne({
+      where: { id: userId },
+    });
+
+    return res.json(response.toAuthJson());
   } catch (err) {
     next(err);
   }

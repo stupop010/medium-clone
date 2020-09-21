@@ -32,6 +32,7 @@ const article = (sequelize, DataTypes) => {
     Article.hasMany(models.Tag, {
       foreignKey: "articleId",
     });
+    Article.hasMany(models.Follow);
   };
 
   return Article;

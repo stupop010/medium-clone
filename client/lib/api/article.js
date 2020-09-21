@@ -16,11 +16,22 @@ const articleAPI = {
           },
         }
       );
-      console.log(response);
+
       return response;
     } catch (err) {
-      console.log(err, "api");
       return err.response;
+    }
+  },
+
+  addFollow: async (articleId) => {
+    try {
+      const response = await axios.post(`${SERVER_BASE_URL}/article/follow`, {
+        articleId,
+      });
+
+      console.log(response);
+    } catch (err) {
+      console.log(err);
     }
   },
 };

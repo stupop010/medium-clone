@@ -11,7 +11,8 @@ const UserReducer = (state, action) => {
 
     case "LOGOUT": {
       return {
-        ...initialState,
+        user: {},
+        isLoggedIn: false,
       };
     }
     default:

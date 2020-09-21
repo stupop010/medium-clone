@@ -18,6 +18,7 @@ const LoginForm = ({ updateUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       setIsLoading(true);
 
@@ -34,6 +35,7 @@ const LoginForm = ({ updateUser }) => {
           user.accessToken,
           user.refreshToken
         );
+
         updateUser(user);
         router.push("/");
       }

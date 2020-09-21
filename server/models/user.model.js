@@ -12,6 +12,9 @@ const user = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
+    bio: {
+      type: DataTypes.STRING,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -51,6 +54,7 @@ const user = (sequelize, DataTypes) => {
       id: this.id,
       name: this.name,
       email: this.email,
+      bio: this.bio,
       createdAt: this.createdAt,
     };
   };
@@ -65,5 +69,3 @@ const user = (sequelize, DataTypes) => {
 };
 
 module.exports = user;
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6MTgsIm5hbWUiOiJTdHVhcnQgRG9uZXkifSwiaWF0IjoxNjAwMzQxMjUxLCJleHAiOjE2MDAzNDEzNzF9.tIN60EO8GY3HQie9oyaMmXz73p7gDj-p8HwuKELW4dk

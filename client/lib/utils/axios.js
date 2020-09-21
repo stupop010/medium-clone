@@ -7,7 +7,6 @@ import localStorageService from "./localStorageService";
   axios.interceptors.request.use(
     (config) => {
       const accessToken = localStorageService.getAccessToken();
-
       if (accessToken) {
         config.headers["Authorization"] = "Token " + accessToken;
       }
@@ -31,6 +30,7 @@ import localStorageService from "./localStorageService";
 
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
+
         const refreshToken = localStorageService.getRefreshToken();
 
         return axios
