@@ -9,7 +9,7 @@ const InputTag = ({ handleAddTag }) => {
       case 188:
       case 9:
         if (e.keyCode !== 9) e.preventDefault();
-        handleAddTag(value);
+        handleAddTag(value.trim());
         setValue("");
         break;
       default:

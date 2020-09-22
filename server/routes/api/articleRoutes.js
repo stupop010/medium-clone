@@ -20,7 +20,7 @@ router.get("/", async (req, res, next) => {
       order: [["createdAt", "DESC"]],
       limit: 25,
     });
-    console.log(response);
+
     return res.json(response);
   } catch (err) {
     next(err);
@@ -87,7 +87,32 @@ router.post("/follow", required, async (req, res, next) => {
       userId: user._id,
     });
 
-    return res.status(201);
+    return res.status(201).json({ message: "success" });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/:article", async (req, res, next) => {
+  // console.log(req);
+  const { models } = req;
+  const { article } = req.params;
+
+  try {
+    const response = await models.Article.findOne({
+      where: {
+        slug: article,
+      },
+      include: [
+        models.Tag,
+        {
+          model: models.User,
+          attributes: ["name"],
+        },
+      ],
+    });
+
+    return res.json(response);
   } catch (err) {
     next(err);
   }

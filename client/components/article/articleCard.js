@@ -1,6 +1,10 @@
+import { useState } from "react";
+import Link from "next/link";
 import styled from "@emotion/styled";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import ArticleTagsList from "./ArticleTagsList";
 
 import articleAPI from "../../lib/api/article";
 
@@ -56,11 +60,22 @@ const CardFooter = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  & a {
+    font-size: 0.8rem;
+  }
 `;
 
 const ArticleCard = ({ article }) => {
+  const [previewArticle, setPreviewArticle] = useState(article);
+  const [followsCount, setFollowsCount] = useState(article.follows.length);
+
   const handleFollow = async () => {
-    await articleAPI.addFollow(article.id);
+    const { status } = await articleAPI.addFollow(article.id);
+
+    if (status === 201) {
+      setFollowsCount(followsCount + 1);
+    }
   };
 
   return (
@@ -72,30 +87,34 @@ const ArticleCard = ({ article }) => {
           </CardAvatar>
           <div>
             <span className="d-block article-card-user">
-              {article.user.name}
+              {previewArticle.user.name}
             </span>
             <span className="d-block article-card-date">
-              {new Date(article.createdAt).toDateString()}
+              {new Date(previewArticle.createdAt).toDateString()}
             </span>
           </div>
         </div>
         <CardFollow onClick={handleFollow}>
           <FontAwesomeIcon icon={faHeart} />
-          <span>{article.follows.length}</span>
+          <span>{followsCount}</span>
         </CardFollow>
       </CardHeader>
 
       <CardBody>
-        <h2>{article.title}</h2>
-        <p>{article.about}</p>
+        <Link href="/article/[pid]" as={`/article/${previewArticle.slug}`}>
+          <a>
+            <h2>{previewArticle.title}</h2>
+            <p>{previewArticle.about}</p>
+          </a>
+        </Link>
       </CardBody>
 
       <CardFooter>
-        <span>read more</span>
-        <div>
-          {article.tags.map((tag) => (
-            <span>{tag}</span>
-          ))}
+        <Link href="/article/[pid]" as={`/article/${previewArticle.slug}`}>
+          <a>Read more...</a>
+        </Link>
+        <div style={{ maxWidth: "250px" }}>
+          <ArticleTagsList tags={previewArticle.tags} />
         </div>
       </CardFooter>
     </CardContainer>

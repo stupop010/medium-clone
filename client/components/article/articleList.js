@@ -1,7 +1,7 @@
 import useSWR from "swr";
 
 import ErrorMessage from "../common/Error";
-import ArticleCard from "./articleCard";
+import ArticleCard from "./ArticleCard";
 
 import fetcher from "../../lib/utils/fetcher";
 import { SERVER_BASE_URL } from "../../lib/utils/constant";
