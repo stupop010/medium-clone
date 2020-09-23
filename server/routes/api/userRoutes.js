@@ -19,7 +19,6 @@ router.get("/", required, async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-  res.json({ m: "s" });
 });
 
 router.post("/register", async (req, res, next) => {
@@ -50,7 +49,6 @@ router.post("/register", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
   const { models } = req;
-  console.log("called");
 
   if (!email) return res.status(422).json({ error: "Can't be blank" });
 

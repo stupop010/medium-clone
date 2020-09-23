@@ -34,6 +34,9 @@ const articleAPI = {
       return err.response;
     }
   },
+
+  createComment: (value) =>
+    axios.post(`${SERVER_BASE_URL}/comment/new`, { ...value }),
 };
 
 export default articleAPI;

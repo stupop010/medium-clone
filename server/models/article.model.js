@@ -33,6 +33,7 @@ const article = (sequelize, DataTypes) => {
       foreignKey: "articleId",
     });
     Article.hasMany(models.Follow);
+    Article.hasMany(models.Comment);
   };
 
   return Article;

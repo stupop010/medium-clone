@@ -39,7 +39,7 @@ const ArticlePage = ({ article, pid }) => {
         <hr className="my-4" />
 
         {isLoggedIn ? (
-          <ArticleComment />
+          <ArticleComment articleId={article.id} />
         ) : (
           <div>
             <p>

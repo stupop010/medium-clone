@@ -9,6 +9,7 @@ const models = {
   Article: require("./article.model")(sequelize, Sequelize.DataTypes),
   Tag: require("./tag.model")(sequelize, Sequelize.DataTypes),
   Token: require("./token.models")(sequelize, Sequelize.DataTypes),
+  Comment: require("./comment.model")(sequelize, Sequelize.DataTypes),
   Follow: require("./follow.models")(sequelize),
 };
 

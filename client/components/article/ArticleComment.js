@@ -1,7 +1,10 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
+import articleAPI from "../../lib/api/article";
 
 const CommentContainer = styled.div`
+  max-width: 490px;
+  margin: auto;
   padding: 2rem;
   border: 1px solid #ededed;
 
@@ -32,12 +35,26 @@ const CommentContainer = styled.div`
   }
 `;
 
-const ArticleComment = () => {
+const ArticleComment = ({ articleId }) => {
   const [textValue, setTextValue] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(textValue);
+
+    setLoading(true);
+
+    try {
+      const response = await articleAPI.createComment({ textValue, articleId });
+
+      console.log(response);
+
+      setTextValue("");
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,7 +65,9 @@ const ArticleComment = () => {
           value={textValue}
           onChange={(e) => setTextValue(e.target.value)}
         />
-        <button type="submit">Post Comment</button>
+        <button type="submit" disabled={loading}>
+          Post Comment
+        </button>
       </form>
     </CommentContainer>
   );
