@@ -35,7 +35,7 @@ const CommentContainer = styled.div`
   }
 `;
 
-const ArticleComment = ({ articleId }) => {
+const ArticleCommentField = ({ articleId }) => {
   const [textValue, setTextValue] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -46,8 +46,6 @@ const ArticleComment = ({ articleId }) => {
 
     try {
       const response = await articleAPI.createComment({ textValue, articleId });
-
-      console.log(response);
 
       setTextValue("");
     } catch (err) {
@@ -73,4 +71,4 @@ const ArticleComment = ({ articleId }) => {
   );
 };
 
-export default ArticleComment;
+export default ArticleCommentField;

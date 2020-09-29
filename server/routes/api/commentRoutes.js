@@ -1,6 +1,30 @@
 const router = require("express").Router();
-const { text } = require("express");
+const models = require("../../models");
 const { required } = require("../auth");
+
+router.get("/:articleId", async (req, res, next) => {
+  const { articleId } = req.params;
+  const { models } = req;
+
+  try {
+    const response = await models.Comment.findAndCountAll({
+      where: {
+        articleId,
+      },
+      limit: 5,
+      include: [
+        {
+          model: models.User,
+          attributes: ["name"],
+        },
+      ],
+    });
+
+    return res.json(response);
+  } catch (err) {
+    next(err);
+  }
+});
 
 router.post("/new", required, async (req, res, next) => {
   const { textValue, articleId } = req.body;

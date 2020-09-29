@@ -62,61 +62,61 @@ const New = () => {
     }
   };
 
-  if (loading) {
-    return <div>...loading</div>;
-  }
-
   return (
     <>
       <Head>
         <title>New Article</title>
       </Head>
       <Layout>
-        <ArticleContainer>
-          <Error error={error} />
-          <form className="d-flex flex-column" onSubmit={handleSubmit}>
-            <fieldset>
-              <label htmlFor="title"></label>
-              <input
-                name="title"
-                type="text"
-                placeholder="Article Title"
-                className="auth-form w-100 mb-3"
-                value={values.title}
-                onChange={handleChange}
-              />
-            </fieldset>
-            <fieldset>
-              <label htmlFor="about"></label>
-              <input
-                name="about"
-                type="text"
-                placeholder="What's this article about?"
-                className="auth-form w-100 mb-3"
-                value={values.about}
-                onChange={handleChange}
-              />
-            </fieldset>
-            <fieldset>
-              <label htmlFor="article"></label>
-              <textarea
-                name="body"
-                className="auth-form w-100 mb-3 article-textarea"
-                placeholder="What's your article (in markdown)"
-                value={values.body}
-                onChange={handleChange}
-              ></textarea>
-            </fieldset>
-            <fieldset>
-              <label htmlFor="title"></label>
-              <InputTag handleAddTag={handleAddTag} />
-            </fieldset>
-            <DisplayTags tags={tags} removeTag={removeTag} />
-            <button type="submit" className="auth-btn" disabled={isLoading}>
-              Publish Article
-            </button>
-          </form>
-        </ArticleContainer>
+        {loading ? (
+          <div>...loading</div>
+        ) : (
+          <ArticleContainer>
+            <Error error={error} />
+            <form className="d-flex flex-column" onSubmit={handleSubmit}>
+              <fieldset>
+                <label htmlFor="title"></label>
+                <input
+                  name="title"
+                  type="text"
+                  placeholder="Article Title"
+                  className="auth-form w-100 mb-3"
+                  value={values.title}
+                  onChange={handleChange}
+                />
+              </fieldset>
+              <fieldset>
+                <label htmlFor="about"></label>
+                <input
+                  name="about"
+                  type="text"
+                  placeholder="What's this article about?"
+                  className="auth-form w-100 mb-3"
+                  value={values.about}
+                  onChange={handleChange}
+                />
+              </fieldset>
+              <fieldset>
+                <label htmlFor="article"></label>
+                <textarea
+                  name="body"
+                  className="auth-form w-100 mb-3 article-textarea"
+                  placeholder="What's your article (in markdown)"
+                  value={values.body}
+                  onChange={handleChange}
+                ></textarea>
+              </fieldset>
+              <fieldset>
+                <label htmlFor="title"></label>
+                <InputTag handleAddTag={handleAddTag} />
+              </fieldset>
+              <DisplayTags tags={tags} removeTag={removeTag} />
+              <button type="submit" className="auth-btn" disabled={isLoading}>
+                Publish Article
+              </button>
+            </form>
+          </ArticleContainer>
+        )}
       </Layout>
     </>
   );
