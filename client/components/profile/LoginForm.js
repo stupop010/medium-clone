@@ -37,7 +37,7 @@ const LoginForm = ({ updateUser }) => {
         );
 
         updateUser(user);
-        router.push("/");
+        router.back();
       }
     } catch (err) {
       setErrors(err.message);

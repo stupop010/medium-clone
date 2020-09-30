@@ -79,6 +79,7 @@ const Profile = () => {
 
   const initialState = {
     username: user.data ? user.data.name : "",
+    // TODO: Bio is null and it will throw a error in textArea if null
     bio: user.data ? user.data.bio : "",
     email: user.data ? user.data.email : "",
     password: "",
@@ -110,6 +111,7 @@ const Profile = () => {
 
   const handleLogout = () => {
     localStorageService.removeTokens();
+    console.log("handle logout");
     logoutUser();
   };
 

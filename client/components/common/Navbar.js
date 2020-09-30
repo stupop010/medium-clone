@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faUserCog } from "@fortawesome/free-solid-svg-icons";
 import styled from "@emotion/styled";
 
-import { UserContext } from "../../lib/context/user/userState";
 import Container from "./Container";
 
 const Logo = styled.div`
@@ -32,9 +30,7 @@ const List = styled.ul`
   }
 `;
 
-const Navbar = () => {
-  const { isLoggedIn } = useContext(UserContext);
-
+const Navbar = ({ isLoggedIn }) => {
   return (
     <nav>
       <Container className="d-flex py-3 justify-content-between align-items-center">

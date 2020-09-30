@@ -3,6 +3,7 @@ import axios from "axios";
 import localStorageService from "../utils/localStorageService";
 
 import { SERVER_BASE_URL } from "../utils/constant";
+
 const articleAPI = {
   create: async (article, tags) => {
     try {
@@ -34,9 +35,6 @@ const articleAPI = {
       return err.response;
     }
   },
-
-  createComment: (value) =>
-    axios.post(`${SERVER_BASE_URL}/comment/new`, { ...value }),
 };
 
 export default articleAPI;

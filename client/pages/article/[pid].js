@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 
 import Layout from "../../components/common/Layout";
 import Container from "../../components/common/Container";
+import Error from "../../components/common/Error";
 import ArticleMeta from "../../components/article/ArticleMeta";
 import ArticleCommentField from "../../components/article/ArticleCommentField";
 import ArticleCommentList from "../../components/article/ArticleCommentList";
@@ -11,6 +12,7 @@ import ArticleDisplay from "../../components/article/ArticleDisplay";
 import ArticleCommentPagination from "../../components/article/ArticleCommentPagination";
 
 import { SERVER_BASE_URL } from "../../lib/utils/constant";
+import commentAPI from "../../lib/api/comment";
 import useAuth from "../../customHook/useAuth";
 
 const AuthLink = styled.a`
@@ -22,10 +24,50 @@ const AuthLink = styled.a`
   }
 `;
 
+const CommentContainer = styled.div`
+  max-width: 570px;
+  margin: auto;
+  padding: 2rem;
+`;
+
+const COMMENTS_PER_PAGE = 10;
+
 const ArticlePage = ({ commentsList, count, article, pid, err }) => {
-  const [comments, setComments] = useState(commentsList);
-  const [commentCount, setCommentCount] = useState(count);
-  const { isLoggedIn } = useAuth();
+  const [comments, setComments] = useState([]);
+  const [commentCount, setCommentCount] = useState(0);
+  const { isLoggedIn, user } = useAuth();
+  const [error, setError] = useState("");
+  const [offset, setOffset] = useState(0);
+
+  useEffect(() => {
+    setComments(commentsList);
+    setCommentCount(count);
+  }, [commentsList, count]);
+
+  useEffect(() => {
+    const errorTimer = setTimeout(() => setError(""), 3000);
+    return () => clearTimeout(errorTimer);
+  }, [error]);
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const { data, status } = await commentAPI.deleteComment(
+        commentId,
+        article.id,
+        COMMENTS_PER_PAGE,
+        offset
+      );
+
+      if (status === 403) {
+        setError(data.message);
+      } else {
+        setComments(data);
+      }
+    } catch (err) {
+      console.log(err);
+      setError("Server Error");
+    }
+  };
 
   return (
     <Layout>
@@ -39,11 +81,24 @@ const ArticlePage = ({ commentsList, count, article, pid, err }) => {
         <hr className="my-4" />
 
         {isLoggedIn && article ? (
-          <>
-            <ArticleCommentField articleId={article.id} />
-            <ArticleCommentList comments={comments} />
-            <ArticleCommentPagination count={commentCount} />
-          </>
+          <CommentContainer>
+            <ArticleCommentField
+              articleId={article.id}
+              setComments={setComments}
+              limit={COMMENTS_PER_PAGE}
+              offset={offset}
+            />
+            {error && <Error error={error} />}
+            <ArticleCommentList
+              comments={comments}
+              userId={user.id}
+              handleDeleteComment={handleDeleteComment}
+            />
+            <ArticleCommentPagination
+              count={commentCount}
+              commentsPerPage={COMMENTS_PER_PAGE}
+            />
+          </CommentContainer>
         ) : (
           <div>
             <p>
@@ -74,7 +129,9 @@ export async function getStaticProps({ params }) {
     const resArticle = await fetch(`${SERVER_BASE_URL}/article/${pid}`);
     const article = await resArticle.json();
 
-    const resComment = await fetch(`${SERVER_BASE_URL}/comment/${article.id}`);
+    const resComment = await fetch(
+      `${SERVER_BASE_URL}/comment/${article.id}?limit=${COMMENTS_PER_PAGE}`
+    );
     const comments = await resComment.json();
 
     return {

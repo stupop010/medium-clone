@@ -1,5 +1,3 @@
-import { initialState } from "./userState";
-
 const UserReducer = (state, action) => {
   switch (action.type) {
     case "UPDATE_USER":

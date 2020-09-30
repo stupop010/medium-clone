@@ -1,12 +1,14 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
-import articleAPI from "../../lib/api/article";
+
+import Error from "../common/Error";
+
+import commentAPI from "../../lib/api/comment";
 
 const CommentContainer = styled.div`
-  max-width: 490px;
-  margin: auto;
-  padding: 2rem;
+  padding: 1.5rem;
   border: 1px solid #ededed;
+  border-radius: 5px;
 
   & form {
     display: flex;
@@ -35,9 +37,10 @@ const CommentContainer = styled.div`
   }
 `;
 
-const ArticleCommentField = ({ articleId }) => {
+const ArticleCommentField = ({ articleId, setComments, limit, offset }) => {
   const [textValue, setTextValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,11 +48,17 @@ const ArticleCommentField = ({ articleId }) => {
     setLoading(true);
 
     try {
-      const response = await articleAPI.createComment({ textValue, articleId });
-
+      const { data } = await commentAPI.createComment({
+        textValue,
+        articleId,
+        offset,
+        limit,
+      });
+      setComments(data);
       setTextValue("");
+      setError("");
     } catch (err) {
-      console.log(err);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -57,6 +66,7 @@ const ArticleCommentField = ({ articleId }) => {
 
   return (
     <CommentContainer>
+      {error && <Error error={error} />}
       <form onSubmit={handleSubmit}>
         <textarea
           placeholder="Add a comment"

@@ -23,7 +23,7 @@ const useAuth = () => {
         logoutUser();
       }
     } else {
-      updateUser(data);
+      updateUser(data.data);
     }
   }, [data]);
 
