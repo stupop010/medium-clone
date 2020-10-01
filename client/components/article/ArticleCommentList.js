@@ -12,6 +12,8 @@ const Container = styled.div`
 
 const Comment = styled.div`
   padding: 0.5rem;
+  overflow: auto;
+
   & p {
     margin: 0;
   }

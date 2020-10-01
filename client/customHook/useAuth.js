@@ -3,7 +3,6 @@ import useSWR from "swr";
 
 import { UserContext } from "../lib/context/user/userState";
 import userFetcher from "../lib/utils/userFetcher";
-import localStorageService from "../lib/utils/localStorageService";
 
 const useAuth = () => {
   const { updateUser, logoutUser, user, isLoggedIn } = useContext(UserContext);

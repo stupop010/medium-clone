@@ -14,6 +14,7 @@ import ArticleCommentPagination from "../../components/article/ArticleCommentPag
 import { SERVER_BASE_URL } from "../../lib/utils/constant";
 import commentAPI from "../../lib/api/comment";
 import useAuth from "../../customHook/useAuth";
+import useTimeoutError from "../../customHook/useTimeoutError";
 
 const AuthLink = styled.a`
   color: #2a9e96;
@@ -36,18 +37,17 @@ const ArticlePage = ({ commentsList, count, article, pid, err }) => {
   const [comments, setComments] = useState([]);
   const [commentCount, setCommentCount] = useState(0);
   const { isLoggedIn, user } = useAuth();
-  const [error, setError] = useState("");
+  const [error, setError] = useTimeoutError();
   const [offset, setOffset] = useState(0);
 
-  useEffect(() => {
-    setComments(commentsList);
+  const updateCommentAndCount = (comments, count) => {
+    setComments(comments);
     setCommentCount(count);
-  }, [commentsList, count]);
+  };
 
   useEffect(() => {
-    const errorTimer = setTimeout(() => setError(""), 3000);
-    return () => clearTimeout(errorTimer);
-  }, [error]);
+    updateCommentAndCount(commentsList, count);
+  }, [commentsList, count]);
 
   const handleDeleteComment = async (commentId) => {
     try {
@@ -61,10 +61,9 @@ const ArticlePage = ({ commentsList, count, article, pid, err }) => {
       if (status === 403) {
         setError(data.message);
       } else {
-        setComments(data);
+        updateCommentAndCount(data.rows, data.count);
       }
     } catch (err) {
-      console.log(err);
       setError("Server Error");
     }
   };
@@ -84,7 +83,7 @@ const ArticlePage = ({ commentsList, count, article, pid, err }) => {
           <CommentContainer>
             <ArticleCommentField
               articleId={article.id}
-              setComments={setComments}
+              updateCommentAndCount={updateCommentAndCount}
               limit={COMMENTS_PER_PAGE}
               offset={offset}
             />
@@ -97,6 +96,9 @@ const ArticlePage = ({ commentsList, count, article, pid, err }) => {
             <ArticleCommentPagination
               count={commentCount}
               commentsPerPage={COMMENTS_PER_PAGE}
+              updateCommentAndCount={updateCommentAndCount}
+              setOffset={setOffset}
+              articleId={article.id}
             />
           </CommentContainer>
         ) : (

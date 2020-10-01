@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const models = require("../../models");
 const { required } = require("../auth");
 
 router.get("/:articleId", async (req, res, next) => {
@@ -8,20 +7,12 @@ router.get("/:articleId", async (req, res, next) => {
   const { limit, offset = 0 } = req.query;
 
   try {
-    const response = await models.Comment.findAndCountAll({
-      where: {
-        articleId,
-      },
-      order: [["createdAt", "DESC"]],
-      limit: parseInt(limit),
-      offset: parseInt(offset),
-      include: [
-        {
-          model: models.User,
-          attributes: ["name", "id"],
-        },
-      ],
-    });
+    const response = await models.Comment.prototype.findAndCountPaginationComment(
+      models,
+      articleId,
+      limit,
+      offset
+    );
 
     return res.json(response);
   } catch (err) {
@@ -34,7 +25,8 @@ router.post("/new", required, async (req, res, next) => {
   const { models } = req;
   const { user } = req.user;
 
-  if (!textValue) return res.status(422).json({ error: "Can't be blank" });
+  if (!textValue)
+    return res.status(422).json({ error: "Text field can not be blank" });
   if (!articleId)
     return res.status(422).json({ error: "Article id not passed down" });
 
@@ -45,20 +37,12 @@ router.post("/new", required, async (req, res, next) => {
       articleId,
     });
 
-    const response = await models.Comment.findAll({
-      where: {
-        articleId,
-      },
-      limit: parseInt(limit),
-      offset: parseInt(offset),
-      order: [["createdAt", "DESC"]],
-      include: [
-        {
-          model: models.User,
-          attributes: ["name", "id"],
-        },
-      ],
-    });
+    const response = await models.Comment.prototype.findAndCountPaginationComment(
+      models,
+      articleId,
+      limit,
+      offset
+    );
 
     return res.status(201).json(response);
   } catch (err) {
@@ -81,22 +65,13 @@ router.delete("/", required, async (req, res, next) => {
         message: "Either comment not found or forbidden to delete",
       });
 
-    const response = await models.Comment.findAll({
-      where: {
-        articleId,
-      },
-      limit: parseInt(limit),
-      offset: parseInt(offset),
-      order: [["createdAt", "DESC"]],
-      include: [
-        {
-          model: models.User,
-          attributes: ["name", "id"],
-        },
-      ],
-    });
+    const response = await models.Comment.prototype.findAndCountPaginationComment(
+      models,
+      articleId,
+      limit,
+      offset
+    );
 
-    console.log(response);
     return res.json(response);
   } catch (err) {
     next(err);

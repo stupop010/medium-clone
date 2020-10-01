@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import Error from "../common/Error";
 
 import commentAPI from "../../lib/api/comment";
+import useTimeoutError from "../../customHook/useTimeoutError";
 
 const CommentContainer = styled.div`
   padding: 1.5rem;
@@ -37,10 +38,15 @@ const CommentContainer = styled.div`
   }
 `;
 
-const ArticleCommentField = ({ articleId, setComments, limit, offset }) => {
+const ArticleCommentField = ({
+  articleId,
+  updateCommentAndCount,
+  limit,
+  offset,
+}) => {
+  const [error, setError] = useTimeoutError();
   const [textValue, setTextValue] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,15 +54,19 @@ const ArticleCommentField = ({ articleId, setComments, limit, offset }) => {
     setLoading(true);
 
     try {
-      const { data } = await commentAPI.createComment({
+      const { data, status } = await commentAPI.createComment({
         textValue,
         articleId,
         offset,
         limit,
       });
-      setComments(data);
-      setTextValue("");
-      setError("");
+
+      if (status === 422) {
+        setError(data.error);
+      } else {
+        updateCommentAndCount(data.rows, data.count);
+        setTextValue("");
+      }
     } catch (err) {
       setError(err.message);
     } finally {

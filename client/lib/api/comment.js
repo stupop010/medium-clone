@@ -10,6 +10,10 @@ const commentAPI = {
     axios.delete(`${SERVER_BASE_URL}/comment`, {
       params: { commentId, articleId, limit, offset },
     }),
+  fetchPaginationComment: (articleId, limit, offset) =>
+    axios.get(`${SERVER_BASE_URL}/comment/${articleId}`, {
+      params: { limit, offset },
+    }),
 };
 
 export default commentAPI;
