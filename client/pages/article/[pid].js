@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
+import Head from "next/head";
 
 import Layout from "../../components/common/Layout";
 import Container from "../../components/common/Container";
@@ -69,54 +70,59 @@ const ArticlePage = ({ commentsList, count, article, pid, err }) => {
   };
 
   return (
-    <Layout>
-      {article && <ArticleMeta article={article} />}
-      <Container className="pt-5">
-        {err && <div>Error fetching article</div>}
-        {!article && !err && <div>...loading</div>}
+    <>
+      <Head>
+        <title>Chimi | {article ? article.title : ""}</title>
+      </Head>
+      <Layout>
+        {article && <ArticleMeta article={article} />}
+        <Container className="pt-5">
+          {err && <div>Error fetching article</div>}
+          {!article && !err && <div>...loading</div>}
 
-        <ArticleDisplay article={article} />
+          <ArticleDisplay article={article} />
 
-        <hr className="my-4" />
+          <hr className="my-4" />
 
-        {isLoggedIn && article ? (
-          <CommentContainer>
-            <ArticleCommentField
-              articleId={article.id}
-              updateCommentAndCount={updateCommentAndCount}
-              limit={COMMENTS_PER_PAGE}
-              offset={offset}
-            />
-            {error && <Error error={error} />}
-            <ArticleCommentList
-              comments={comments}
-              userId={user.id}
-              handleDeleteComment={handleDeleteComment}
-            />
-            <ArticleCommentPagination
-              count={commentCount}
-              commentsPerPage={COMMENTS_PER_PAGE}
-              updateCommentAndCount={updateCommentAndCount}
-              setOffset={setOffset}
-              articleId={article.id}
-            />
-          </CommentContainer>
-        ) : (
-          <div>
-            <p>
-              <Link href="/user/login">
-                <AuthLink>Sign in</AuthLink>
-              </Link>{" "}
-              or{" "}
-              <Link href="/user/register">
-                <AuthLink>sign up</AuthLink>
-              </Link>{" "}
-              to add comments on this article.
-            </p>
-          </div>
-        )}
-      </Container>
-    </Layout>
+          {isLoggedIn && article ? (
+            <CommentContainer>
+              <ArticleCommentField
+                articleId={article.id}
+                updateCommentAndCount={updateCommentAndCount}
+                limit={COMMENTS_PER_PAGE}
+                offset={offset}
+              />
+              {error && <Error error={error} />}
+              <ArticleCommentList
+                comments={comments}
+                userId={user.id}
+                handleDeleteComment={handleDeleteComment}
+              />
+              <ArticleCommentPagination
+                count={commentCount}
+                commentsPerPage={COMMENTS_PER_PAGE}
+                updateCommentAndCount={updateCommentAndCount}
+                setOffset={setOffset}
+                articleId={article.id}
+              />
+            </CommentContainer>
+          ) : (
+            <div>
+              <p>
+                <Link href="/user/login">
+                  <AuthLink>Sign in</AuthLink>
+                </Link>{" "}
+                or{" "}
+                <Link href="/user/register">
+                  <AuthLink>sign up</AuthLink>
+                </Link>{" "}
+                to add comments on this article.
+              </p>
+            </div>
+          )}
+        </Container>
+      </Layout>
+    </>
   );
 };
 

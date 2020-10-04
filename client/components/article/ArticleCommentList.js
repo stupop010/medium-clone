@@ -47,36 +47,41 @@ const ArticleCommentList = ({ comments, userId, handleDeleteComment }) => {
 
   return (
     <div>
-      {comments.map((comment) => (
-        <Container key={comment.id}>
-          <Comment>
-            <p>{comment.comment}</p>
-          </Comment>
-          <CommentUser>
-            <Link href={`/profile/${encodeURIComponent(comment.user.name)}`}>
-              <a>
-                <img
-                  src="/default-avatar.png"
-                  alt="default avatar"
-                  width="25px"
-                />
-                <span>{comment.user.name}</span>
-              </a>
-            </Link>
-            <span className="ml-1">
-              {new Date(comment.createdAt).toDateString()}
-            </span>
-            {comment.user.id === userId ? (
-              <Delete className="ml-1">
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  onClick={() => handleDeleteComment(comment.id)}
-                />
-              </Delete>
-            ) : null}
-          </CommentUser>
-        </Container>
-      ))}
+      {comments.map((comment) => {
+        return (
+          <Container key={comment.id}>
+            <Comment>
+              <p>{comment.comment}</p>
+            </Comment>
+            <CommentUser>
+              <Link
+                href="/profile/[user]"
+                as={`/profile/${encodeURIComponent(comment.user.name)}`}
+              >
+                <a>
+                  <img
+                    src="/default-avatar.png"
+                    alt="default avatar"
+                    width="25px"
+                  />
+                  <span>{comment.user.name}</span>
+                </a>
+              </Link>
+              <span className="ml-1">
+                {new Date(comment.createdAt).toDateString()}
+              </span>
+              {comment.user.id === userId ? (
+                <Delete className="ml-1">
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    onClick={() => handleDeleteComment(comment.id)}
+                  />
+                </Delete>
+              ) : null}
+            </CommentUser>
+          </Container>
+        );
+      })}
     </div>
   );
 };

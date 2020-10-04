@@ -1,17 +1,12 @@
-import useSWR from "swr";
-
-import ErrorMessage from "../common/Error";
+import Error from "../common/Error";
 import ArticleCard from "./ArticleCard";
 
-import fetcher from "../../lib/utils/fetcher";
-import { SERVER_BASE_URL } from "../../lib/utils/constant";
-
-const ArticleList = () => {
-  const { data, error } = useSWR(`${SERVER_BASE_URL}/article`, fetcher);
+const ArticleList = ({ articles }) => {
+  const { data, error } = articles;
 
   if (!data) return null;
-  if (error) return <ErrorMessage error="Can't load recent article" />;
-  if (data.length === 0) return <ErrorMessage error="No articles yet..." />;
+  if (error) return <Error error="Can't load recent article" />;
+  if (data.length === 0) return <Error error="No articles yet..." />;
 
   return (
     <div>

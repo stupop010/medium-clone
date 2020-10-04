@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import Link from "next/link";
 
 const TagList = styled.ul`
   display: flex;
@@ -13,18 +14,31 @@ const Tag = styled.li`
   color: #d8d8d8;
   border: 1px solid #d8d8d8;
   border-radius: 15px;
+  transition: 0.3s;
+
+  &:hover {
+    color: #fff;
+    background-color: #687077;
+    border-color: #687077;
+  }
 `;
 
-const ArticleTagsList = ({ tags }) => (
-  <>
-    {tags && (
-      <TagList>
-        {tags.map((tag) => (
-          <Tag key={tag.id}>{tag.tag}</Tag>
-        ))}
-      </TagList>
-    )}
-  </>
-);
+const ArticleTagsList = ({ tags }) => {
+  return (
+    <>
+      {tags && (
+        <TagList>
+          {tags.map(({ id, tag }) => (
+            <Tag key={id}>
+              <Link href={`/?tag=${tag}`} as={`/?tag=${tag}`}>
+                <a>{tag}</a>
+              </Link>
+            </Tag>
+          ))}
+        </TagList>
+      )}
+    </>
+  );
+};
 
 export default ArticleTagsList;

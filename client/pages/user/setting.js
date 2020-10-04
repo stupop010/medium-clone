@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import Router from "next/router";
-import { mutate } from "swr";
+import Head from "next/head";
 import styled from "@emotion/styled";
 
 import { UserContext } from "../../lib/context/user/userState";
@@ -71,7 +71,7 @@ const LogoutButton = styled.button`
   }
 `;
 
-const Profile = () => {
+const Setting = () => {
   const [profileLoading, setProfileLoading] = useState(false);
   const [error, setError] = useState("");
   const { logoutUser, updateUser } = useContext(UserContext);
@@ -111,69 +111,73 @@ const Profile = () => {
 
   const handleLogout = () => {
     localStorageService.removeTokens();
-    console.log("handle logout");
     logoutUser();
   };
 
   return (
-    <Layout>
-      <SettingContainer>
-        <h1>Your Setting</h1>
-        <form onSubmit={handleSubmit}>
-          {error && <Error error={error} />}
-          <fieldset>
-            <SettingInput
-              className="settings-fields"
-              placeholder={values.username ? values.username : "Username"}
-              value={values.username}
-              name="username"
-              onChange={handleChange}
-            />
-          </fieldset>
-          <fieldset>
-            <SettingTextArea
-              className="settings-fields"
-              placeholder={values.bio ? values.bio : "Short bio about you"}
-              value={values.bio}
-              name="bio"
-              onChange={handleChange}
-            />
-          </fieldset>
-          <fieldset>
-            <SettingInput
-              className="settings-fields"
-              placeholder={values.email ? values.email : "Email"}
-              value={values.email}
-              name="email"
-              onChange={handleChange}
-            />
-          </fieldset>
-          <fieldset>
-            <SettingInput
-              className="settings-fields"
-              placeholder="Password"
-              value={values.password}
-              name="password"
-              onChange={handleChange}
-            />
-          </fieldset>
-          <div className="d-flex  justify-content-end">
-            <SubmitButton type="submit" disabled={profileLoading}>
-              Update Setting
-            </SubmitButton>
+    <>
+      <Head>
+        <title>Chimi | Setting</title>
+      </Head>
+      <Layout>
+        <SettingContainer>
+          <h1>Your Setting</h1>
+          <form onSubmit={handleSubmit}>
+            {error && <Error error={error} />}
+            <fieldset>
+              <SettingInput
+                className="settings-fields"
+                placeholder={values.username ? values.username : "Username"}
+                value={values.username}
+                name="username"
+                onChange={handleChange}
+              />
+            </fieldset>
+            <fieldset>
+              <SettingTextArea
+                className="settings-fields"
+                placeholder={values.bio ? values.bio : "Short bio about you"}
+                value={values.bio}
+                name="bio"
+                onChange={handleChange}
+              />
+            </fieldset>
+            <fieldset>
+              <SettingInput
+                className="settings-fields"
+                placeholder={values.email ? values.email : "Email"}
+                value={values.email}
+                name="email"
+                onChange={handleChange}
+              />
+            </fieldset>
+            <fieldset>
+              <SettingInput
+                className="settings-fields"
+                placeholder="Password"
+                value={values.password}
+                name="password"
+                onChange={handleChange}
+              />
+            </fieldset>
+            <div className="d-flex  justify-content-end">
+              <SubmitButton type="submit" disabled={profileLoading}>
+                Update Setting
+              </SubmitButton>
+            </div>
+          </form>
+
+          <hr className="my-2" />
+
+          <div className="d-flex justify-content-start">
+            <LogoutButton onClick={handleLogout} disabled={profileLoading}>
+              or click here to logout
+            </LogoutButton>
           </div>
-        </form>
-
-        <hr className="my-2" />
-
-        <div className="d-flex justify-content-start">
-          <LogoutButton onClick={handleLogout} disabled={profileLoading}>
-            or click here to logout
-          </LogoutButton>
-        </div>
-      </SettingContainer>
-    </Layout>
+        </SettingContainer>
+      </Layout>
+    </>
   );
 };
 
-export default Profile;
+export default Setting;

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-const BannerContainer = styled.div`
+const BannerContainer = styled.header`
   width: 100%;
   height: 190px;
   background-color: #2a9e96;

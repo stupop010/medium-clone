@@ -25,13 +25,6 @@ app.use(passport.session());
 app.use(morgan("common"));
 app.use(cors());
 
-// Middleware to pass on the models to routes
-app.use((req, res, next) => {
-  req.models = models;
-
-  next();
-});
-
 if (!isProduction) {
   app.use(errorhandler());
 }

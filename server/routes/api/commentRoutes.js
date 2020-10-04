@@ -1,9 +1,9 @@
 const router = require("express").Router();
+const models = require("../../models");
 const { required } = require("../auth");
 
 router.get("/:articleId", async (req, res, next) => {
   const { articleId } = req.params;
-  const { models } = req;
   const { limit, offset = 0 } = req.query;
 
   try {
@@ -22,7 +22,6 @@ router.get("/:articleId", async (req, res, next) => {
 
 router.post("/new", required, async (req, res, next) => {
   const { textValue, articleId, limit, offset } = req.body;
-  const { models } = req;
   const { user } = req.user;
 
   if (!textValue)
@@ -52,7 +51,6 @@ router.post("/new", required, async (req, res, next) => {
 
 router.delete("/", required, async (req, res, next) => {
   const { commentId, articleId, limit, offset } = req.query;
-  const { models } = req;
   const { user } = req.user;
 
   try {

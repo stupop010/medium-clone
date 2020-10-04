@@ -65,7 +65,7 @@ const New = () => {
   return (
     <>
       <Head>
-        <title>New Article</title>
+        <title>Chimi | New Article</title>
       </Head>
       <Layout>
         {loading ? (

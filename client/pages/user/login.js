@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import Link from "next/link";
 import Router from "next/router";
+import Head from "next/head";
 import styled from "@emotion/styled";
 
 import { UserContext } from "../../lib/context/user/userState";
@@ -24,19 +25,24 @@ const Login = () => {
   }
 
   return (
-    <Layout>
-      <FormContainer>
-        <UserFormsHeading>
-          {/*  more styles for below are in userFormsHeading styled component */}
-          <h2 className="my-3">Sign In</h2>
-          <Link href="/user/register">
-            <a className="mb-1">Need an account?</a>
-          </Link>
-        </UserFormsHeading>
+    <>
+      <Head>
+        <title>Chimi | Login</title>
+      </Head>
+      <Layout>
+        <FormContainer>
+          <UserFormsHeading>
+            {/*  more styles for below are in userFormsHeading styled component */}
+            <h2 className="my-3">Sign In</h2>
+            <Link href="/user/register">
+              <a className="mb-1">Need an account?</a>
+            </Link>
+          </UserFormsHeading>
 
-        <LoginForm updateUser={updateUser} />
-      </FormContainer>
-    </Layout>
+          <LoginForm updateUser={updateUser} />
+        </FormContainer>
+      </Layout>
+    </>
   );
 };
 

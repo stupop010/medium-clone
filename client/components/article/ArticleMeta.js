@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import Link from "next/link";
 
 const PageHeader = styled.div`
   padding: 2rem;
@@ -21,10 +22,16 @@ const UserInfo = styled.div`
     margin-right: 5px;
   }
 
-  & h3 {
+  & a {
+    display: block;
     font-size: 0.9rem;
     padding: 0;
     margin: 0;
+    transition: 0.3s;
+
+    &:hover {
+      color: #2a9e96;
+    }
   }
 
   & span {
@@ -40,8 +47,13 @@ const ArticleMeta = ({ article }) => (
       <UserInfo>
         <img src="/light-avatar.png" alt="default avatar" />
 
-        <div>
-          <h3>{article.user.name}</h3>
+        <div className="mt-2">
+          <Link
+            href="/profile/[user]"
+            as={`/profile/${encodeURIComponent(article.user.name)}`}
+          >
+            <a>{article.user.name}</a>
+          </Link>
           <span>{new Date(article.createdAt).toDateString()}</span>
         </div>
       </UserInfo>

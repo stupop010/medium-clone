@@ -1,12 +1,12 @@
 const router = require("express").Router();
-
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
+
+const models = require("../../models");
 const { required } = require("../auth");
 
 router.get("/", required, async (req, res, next) => {
   const { user } = req.user;
-  const { models } = req;
 
   try {
     const userFound = await models.User.findOne({
@@ -23,7 +23,6 @@ router.get("/", required, async (req, res, next) => {
 
 router.post("/register", async (req, res, next) => {
   const { name, email, password } = req.body;
-  const { models } = req;
 
   try {
     const user = await models.User.create({
@@ -48,7 +47,6 @@ router.post("/register", async (req, res, next) => {
 
 router.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
-  const { models } = req;
 
   if (!email) return res.status(422).json({ error: "Can't be blank" });
 
@@ -75,7 +73,6 @@ router.post("/login", async (req, res, next) => {
 
 router.post("/refresh", async (req, res, next) => {
   const { refreshToken } = req.body;
-  const { models } = req;
 
   if (!refreshToken) {
     return res.status(403).json({ message: "refresh missing" });
@@ -121,7 +118,6 @@ router.post("/refresh", async (req, res, next) => {
 
 router.put("/update", required, async (req, res, next) => {
   const { username, bio, email, password } = req.body;
-  const { models } = req;
   const userId = req.user.user._id;
 
   const updateData = {};

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import styled from "@emotion/styled";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
@@ -67,7 +67,6 @@ const CardFooter = styled.div`
 `;
 
 const ArticleCard = ({ article }) => {
-  const [previewArticle, setPreviewArticle] = useState(article);
   const [followsCount, setFollowsCount] = useState(article.follows.length);
 
   const handleFollow = async () => {
@@ -80,43 +79,52 @@ const ArticleCard = ({ article }) => {
 
   return (
     <CardContainer>
-      <CardHeader>
-        <div className="d-flex">
-          <CardAvatar>
-            <img src="/default-avatar.png" alt="default avatar" />
-          </CardAvatar>
-          <div>
-            <span className="d-block article-card-user">
-              {previewArticle.user.name}
-            </span>
-            <span className="d-block article-card-date">
-              {new Date(previewArticle.createdAt).toDateString()}
-            </span>
-          </div>
-        </div>
-        <CardFollow onClick={handleFollow}>
-          <FontAwesomeIcon icon={faHeart} />
-          <span>{followsCount}</span>
-        </CardFollow>
-      </CardHeader>
+      {article && (
+        <>
+          <CardHeader>
+            <div className="d-flex">
+              <CardAvatar>
+                <img src="/default-avatar.png" alt="default avatar" />
+              </CardAvatar>
+              <div>
+                <Link
+                  href="/profile/[user]"
+                  as={`/profile/${encodeURIComponent(article.user.name)}`}
+                >
+                  <a className="d-block article-card-user">
+                    {article.user.name}
+                  </a>
+                </Link>
+                <span className="d-block article-card-date">
+                  {new Date(article.createdAt).toDateString()}
+                </span>
+              </div>
+            </div>
+            <CardFollow onClick={handleFollow}>
+              <FontAwesomeIcon icon={faHeart} />
+              <span>{followsCount}</span>
+            </CardFollow>
+          </CardHeader>
 
-      <CardBody>
-        <Link href="/article/[pid]" as={`/article/${previewArticle.slug}`}>
-          <a>
-            <h2>{previewArticle.title}</h2>
-            <p>{previewArticle.about}</p>
-          </a>
-        </Link>
-      </CardBody>
+          <CardBody>
+            <Link href="/article/[pid]" as={`/article/${article.slug}`}>
+              <a>
+                <h2>{article.title}</h2>
+                <p>{article.about}</p>
+              </a>
+            </Link>
+          </CardBody>
 
-      <CardFooter>
-        <Link href="/article/[pid]" as={`/article/${previewArticle.slug}`}>
-          <a>Read more...</a>
-        </Link>
-        <div style={{ maxWidth: "250px" }}>
-          <ArticleTagsList tags={previewArticle.tags} />
-        </div>
-      </CardFooter>
+          <CardFooter>
+            <Link href="/article/[pid]" as={`/article/${article.slug}`}>
+              <a>Read more...</a>
+            </Link>
+            <div style={{ maxWidth: "250px" }}>
+              <ArticleTagsList tags={article.tags} />
+            </div>
+          </CardFooter>
+        </>
+      )}
     </CardContainer>
   );
 };

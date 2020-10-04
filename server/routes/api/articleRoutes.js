@@ -1,12 +1,20 @@
 const router = require("express").Router();
+
+const models = require("../../models");
 const { required, optional } = require("../auth");
 
 router.get("/", async (req, res, next) => {
-  const { models } = req;
+  const query = {};
+  const { Op } = models.Sequelize;
+  if (typeof req.query.tag !== "undefined") query.tag = req.query.tag;
+
   try {
     const response = await models.Article.findAll({
       include: [
-        models.Tag,
+        {
+          model: models.Tag,
+          where: query.tag ? { tag: { [Op.like]: `%${query.tag}%` } } : null,
+        },
         {
           model: models.User,
           attributes: ["name"],
@@ -23,13 +31,13 @@ router.get("/", async (req, res, next) => {
 
     return res.json(response);
   } catch (err) {
+    console.log(err);
     next(err);
   }
 });
 
 router.post("/new", required, async (req, res, next) => {
   const { title, about, body, tags } = req.body;
-  const { models } = req;
   const { user } = req.user;
 
   if (!title) return res.status(422).json({ error: "Title can not be blank" });
@@ -67,7 +75,6 @@ router.post("/new", required, async (req, res, next) => {
 
 router.post("/follow", required, async (req, res, next) => {
   const { articleId } = req.body;
-  const { models } = req;
   const { user } = req.user;
 
   try {
@@ -94,8 +101,6 @@ router.post("/follow", required, async (req, res, next) => {
 });
 
 router.get("/:article", async (req, res, next) => {
-  // console.log(req);
-  const { models } = req;
   const { article } = req.params;
 
   try {
